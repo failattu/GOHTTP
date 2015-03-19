@@ -5,9 +5,15 @@ import (
 	"os"
 	"net/http"
 	"io/ioutil"
+	"log"
+	"html"
 )
 func server(){
+	http.HandleFunc("/bar", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
+	})
 
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
 func getReq(address string){
@@ -18,10 +24,11 @@ func getReq(address string){
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	s := string(body)
-	return s
+	fmt.Printf( s)
 }
 
 func postReq(address string){
+
 
 }
 
