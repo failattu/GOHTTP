@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"html"
+	"io"
 )
 func server(){
 	http.HandleFunc("/bar", func(w http.ResponseWriter, r *http.Request) {
@@ -28,7 +29,15 @@ func getReq(address string){
 }
 
 func postReq(address string){
-
+    var buf io.Reader
+	resp, err := http.Post(address,"text/plain", buf)
+	if err != nil {
+		fmt.Printf("ERROR IN GET")
+	}
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	s := string(body)
+	fmt.Printf( s)
 
 }
 
